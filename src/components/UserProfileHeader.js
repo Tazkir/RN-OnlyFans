@@ -66,7 +66,9 @@ const UserProfileHeader = ({ user, isSubscribed, setIsSubscribed }) => {
           {user.name}
         </Text>
         <Text style={{ color: 'gray', marginBottom: 20 }}>@{user.handle}</Text>
-        <Text style={{ lineHeight: 20 }}>{user.bio}</Text>
+        <Text style={{ lineHeight: 20 }} numberOfLines={5}>
+          {user.bio}
+        </Text>
 
         <Text style={{ color: 'gray', marginTop: 20, fontWeight: 'bold' }}>
           SUBSCRIPTION
@@ -95,7 +97,7 @@ const UserProfileHeader = ({ user, isSubscribed, setIsSubscribed }) => {
           >
             {user.subscriptionPrice === 0
               ? 'FOR FREE'
-              : `$${user.subscriptionPrice} / month`}
+              : `$${user.subscriptionPrice.toFixed(2)} / month`}
           </Text>
         </Pressable>
       </View>

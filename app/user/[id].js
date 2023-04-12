@@ -1,21 +1,32 @@
 import { useSearchParams } from 'expo-router';
 import { Text, StyleSheet, FlatList, View } from 'react-native';
 import UserProfileHeader from '../../src/components/UserProfileHeader';
-import { useState } from 'react';
-import users from '../../assets/data/users';
+import { useEffect, useState } from 'react';
 import posts from '../../assets/data/posts';
 import Post from '../../src/components/Post';
 import { AntDesign } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { DataStore } from 'aws-amplify';
+import { User } from '../../src/models';
 
 const ProfilePage = () => {
+  const [user, setUser] = useState();
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   const { id } = useSearchParams();
 
-  const user = users.find((u) => u.id === id);
+  useEffect(() => {
+    DataStore.query(User, id).then(setUser);
+  }, [id]);
+
+  // const user = users.find((u) => u.id === id);
 
   if (!user) {
-    return <Text>User not found!</Text>;
+    return (
+      <SafeAreaView>
+        <Text>User not found!</Text>
+      </SafeAreaView>
+    );
   }
 
   if (!isSubscribed) {
