@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3onlyfansstorage85deedf6",
+  "bucketName": "onlyfans-storage-85deedf6",
+  "policyUUID": "ec553bf4",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
