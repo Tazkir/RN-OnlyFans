@@ -4,13 +4,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
+import { DataStore } from 'aws-amplify';
+import { Post } from '../src/models';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 const NewPost = () => {
   const [text, setText] = useState('');
   const [image, setImage] = useState('');
 
-  const onPost = () => {
+  const { user } = useAuthenticator();
+
+  const onPost = async () => {
     console.warn('Post: ', text);
+    await DataStore.save(
+      new Post({ text, likes: 0, userID: user.attributes.sub })
+    );
+    setText();
   };
 
   const pickImage = async () => {

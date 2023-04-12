@@ -2,21 +2,22 @@ import { useSearchParams } from 'expo-router';
 import { Text, StyleSheet, FlatList, View } from 'react-native';
 import UserProfileHeader from '../../src/components/UserProfileHeader';
 import { useEffect, useState } from 'react';
-import posts from '../../assets/data/posts';
 import Post from '../../src/components/Post';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DataStore } from 'aws-amplify';
-import { User } from '../../src/models';
+import { User, Post as PostModel } from '../../src/models';
 
 const ProfilePage = () => {
   const [user, setUser] = useState();
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [isSubscribed, setIsSubscribed] = useState(true);
 
   const { id } = useSearchParams();
 
   useEffect(() => {
     DataStore.query(User, id).then(setUser);
+    DataStore.query(PostModel, (post) => post.userID.eq(id)).then(setPosts);
   }, [id]);
 
   // const user = users.find((u) => u.id === id);
@@ -67,7 +68,7 @@ const ProfilePage = () => {
     <View>
       <FlatList
         data={posts}
-        renderItem={({ item }) => <Post post={item} />}
+        renderItem={({ item }) => <Post post={item} user={user} />}
         ListHeaderComponent={() => (
           <UserProfileHeader
             user={user}
